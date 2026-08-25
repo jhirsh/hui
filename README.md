@@ -24,6 +24,19 @@ That's deliberate. There is no tsup/rollup step, which means the `"use client"`
 directives in `Sidebar` and `DarkModeToggle` arrive exactly as written —
 bundlers routinely strip or hoist them, which breaks the components silently.
 
+Then point Tailwind at the package, or **none of its styles will be generated**:
+
+```css
+/* globals.css */
+@import "tailwindcss";
+@source "../node_modules/hirshland-ui";
+```
+
+Tailwind v4 scans your source for class names but skips `node_modules`. Without
+this line everything compiles, renders, and hydrates correctly — and looks
+completely unstyled. It is the easiest thing to miss when adding the kit to a
+new site.
+
 ## Use
 
 ```tsx
