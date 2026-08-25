@@ -1,10 +1,10 @@
 {
-  "name": "hirshland-ui",
+  "name": "hui",
   "version": "0.1.0",
   "description": "Shared UI kit for hirshland.xyz and its standalone pieces.",
   "license": "MIT",
   "author": "Jonas Hirshland",
-  "repository": { "type": "git", "url": "git+https://github.com/jhirsh/hirshland-ui.git" },
+  "repository": { "type": "git", "url": "git+https://github.com/jhirsh/hui.git" },
   "type": "module",
   "main": "./index.tsx",
   "types": "./index.tsx",

@@ -1,4 +1,4 @@
-# hirshland-ui
+# hui
 
 Shared UI kit for [hirshland.xyz](https://hirshland.xyz) and its standalone
 pieces (camino, lct), so they stay visually consistent without a design system.
@@ -6,8 +6,8 @@ pieces (camino, lct), so they stay visually consistent without a design system.
 ## Install
 
 ```bash
-npm i github:jhirsh/hirshland-ui        # latest on main
-npm i github:jhirsh/hirshland-ui#v0.1.0 # pinned to a tag
+npm i github:jhirsh/hui        # latest on main
+npm i github:jhirsh/hui#v0.1.0 # pinned to a tag
 ```
 
 Then tell your bundler to compile it, because this package ships **TypeScript
@@ -16,7 +16,7 @@ source rather than a build**:
 ```ts
 // next.config.ts
 const nextConfig = {
-  transpilePackages: ["hirshland-ui"],
+  transpilePackages: ["hui"],
 };
 ```
 
@@ -29,7 +29,7 @@ Then point Tailwind at the package, or **none of its styles will be generated**:
 ```css
 /* globals.css */
 @import "tailwindcss";
-@source "../node_modules/hirshland-ui";
+@source "../node_modules/hui";
 ```
 
 Tailwind v4 scans your source for class names but skips `node_modules`. Without
@@ -40,7 +40,7 @@ new site.
 ## Use
 
 ```tsx
-import { HomeLink, Byline, SiteFooter, tokens } from "hirshland-ui";
+import { HomeLink, Byline, SiteFooter, tokens } from "hui";
 
 <HomeLink variant="pill" />
 <Byline date="June – August 2026" location="Camino del Norte" />
@@ -82,8 +82,8 @@ the footer works unchanged on a white page and on camino's dark one.
 To iterate without a commit-push-reinstall loop:
 
 ```bash
-cd hirshland-ui && npm link
-cd ../your-site && npm link hirshland-ui
+cd hui && npm link
+cd ../your-site && npm link hui
 # when done
-npm unlink hirshland-ui && npm i
+npm unlink hui && npm i
 ```
