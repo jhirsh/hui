@@ -18,7 +18,7 @@ export const tokens = {
    * in running text, color alone is not a reliable affordance and hover-only
    * underlines don't exist on touch.
    */
-  link: "text-current/60 underline decoration-current/30 underline-offset-2 transition-colors hover:text-current hover:decoration-current/60",
+  link: "text-current/60 underline decoration-current/50 underline-offset-2 transition-colors hover:text-current hover:decoration-current",
 } as const;
 
 /**
@@ -37,7 +37,7 @@ export const FONT_CLASS = "font-sans";
 export const linkVariants = {
   /** Safest default: unmistakable without being loud. */
   underline:
-    "text-current/60 underline decoration-current/30 underline-offset-2 transition-colors hover:text-current hover:decoration-current/60",
+    "text-current/60 underline decoration-current/50 underline-offset-2 transition-colors hover:text-current hover:decoration-current",
   /** No decoration. Relies on placement, so use only where it's obviously a link. */
   plain: "text-current/60 no-underline transition-colors hover:text-current",
   /** Bordered pill. Reads as a button-ish target — good for a lone call to action. */
