@@ -1,0 +1,48 @@
+name: Version
+
+# Patch-bump on every push to main, so consumers always have a moving target
+# they can pin. Minor and major stay manual: run `npm version minor` locally
+# and push — the guard below sees the version already changed and stands down.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Skip if this push already set a version
+        id: check
+        run: |
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            git show HEAD~1:package.json > /tmp/prev.json
+            prev=$(node -pe "require('/tmp/prev.json').version")
+          else
+            prev=""
+          fi
+          cur=$(node -pe "require('$PWD/package.json').version")
+          echo "previous=$prev current=$cur"
+          if [ "$prev" != "$cur" ]; then
+            echo "Version changed by hand — leaving it alone."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Patch bump and tag
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm version patch -m "chore: release v%s [skip ci]"
+          git push --follow-tags

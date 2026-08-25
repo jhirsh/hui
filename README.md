@@ -87,3 +87,18 @@ cd ../your-site && npm link hui
 # when done
 npm unlink hui && npm i
 ```
+
+## Versioning
+
+Every push to `main` gets an automatic **patch** bump and a matching `vX.Y.Z`
+tag, so there is always a pinnable ref.
+
+Minor and major bumps are deliberate. Do them locally and push:
+
+```bash
+npm version minor   # or major
+git push --follow-tags
+```
+
+The workflow notices the version already changed in that commit and skips its
+own bump, so your intentional version stands.
