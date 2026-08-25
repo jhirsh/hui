@@ -11,6 +11,7 @@ export { default as PhotoGallery } from "./PhotoGallery";
 export { default as Lightbox } from "./Lightbox";
 export { default as PhotoImg } from "./PhotoImg";
 export type { ImgSrc } from "./PhotoImg";
+export { isLocalhost } from "./env";
 export { tokens, linkVariants, FONT_CLASS } from "./tokens";
 export type { LinkVariant } from "./tokens";
 export type { NavLink, NavigateInfo, OnNavigate } from "./types";

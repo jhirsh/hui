@@ -14,7 +14,8 @@
   "exports": {
     ".": "./index.tsx",
     "./tokens": "./tokens.ts",
-    "./scripts/optimize-images.mjs": "./scripts/optimize-images.mjs"
+    "./scripts/optimize-images.mjs": "./scripts/optimize-images.mjs",
+    "./env": "./env.ts"
   },
   "files": [
     "*.tsx",

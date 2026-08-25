@@ -103,6 +103,23 @@ Autocapture records these clicks either way. `onNavigate` earns its place by
 giving them a stable event name and typed properties, instead of a query that
 depends on CSS selectors.
 
+### Not reporting from localhost
+
+Neither hui nor `onNavigate`/`onEvent` sends anything on their own — they hand
+you the event and you decide. The one piece worth sharing is the check for
+whether this page is a dev machine, so every site guards it the same way:
+
+```ts
+import { isLocalhost } from "hui";
+
+if (!isLocalhost()) posthog.init(TOKEN, { /* ... */ });
+```
+
+It matches `localhost`, `127.0.0.1`, `::1`, and any `.local` / `.localhost`
+host, and is false during SSR. Hostname rather than `NODE_ENV`: a static export
+served locally is a production build, and that is exactly when it is easy to
+pollute real traffic.
+
 ## Photos
 
 `PhotoGallery` is a responsive grid that opens a swipeable full-screen
