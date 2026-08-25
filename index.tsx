@@ -25,7 +25,9 @@ export function SiteChrome({
   return (
     <>
       <Sidebar links={links} />
-      <div className="md:ml-[30%] mr-[7.5%] p-4 pt-4 md:pt-[60px]">{children}</div>
+      {/* max-w caps the reading measure: without it the column just scales with
+          the window, and on a wide display prose runs past 100 characters a line. */}
+      <div className="md:ml-[30%] mr-[7.5%] max-w-3xl p-4 pt-4 md:pt-[60px]">{children}</div>
     </>
   );
 }
