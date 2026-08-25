@@ -13,11 +13,14 @@ export default function Lightbox({
   index,
   onIndex,
   label = 'photo',
+  onEvent,
 }: {
   items: ImgSrc[];
   index: number | null;
   onIndex: (i: number | null) => void;
   label?: string;
+  /** Called on navigate and download. For analytics; see README. */
+  onEvent?: (name: 'media_navigated' | 'media_downloaded', props: Record<string, unknown>) => void;
 }) {
   const track = useRef<HTMLDivElement>(null);
   const close = useCallback(() => onIndex(null), [onIndex]);
@@ -36,10 +39,11 @@ export default function Lightbox({
       if (index === null) return;
       const i = (index + d + items.length) % items.length;
       onIndex(i);
+      onEvent?.('media_navigated', { media_type: label, direction: d > 0 ? 'next' : 'previous' });
       // Wrapping is a jump, not a slide — snapping across the whole track looks broken.
       scrollTo(i, Math.abs(i - index) === 1 ? 'smooth' : 'auto');
     },
-    [index, items.length, label, onIndex, scrollTo]
+    [index, items.length, label, onEvent, onIndex, scrollTo]
   );
 
   // Swipe hint: a small nudge that settles back, so opening on a touch device
@@ -177,6 +181,7 @@ export default function Lightbox({
         <a
           href={item.original}
           download
+          onClick={() => onEvent?.('media_downloaded', { media_type: label })}
           className="rounded-full bg-white/10 px-3 py-1 text-white/80 hover:bg-white/20"
         >
           Download original

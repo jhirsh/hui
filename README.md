@@ -103,6 +103,38 @@ Autocapture records these clicks either way. `onNavigate` earns its place by
 giving them a stable event name and typed properties, instead of a query that
 depends on CSS selectors.
 
+## Photos
+
+`PhotoGallery` is a responsive grid that opens a swipeable full-screen
+`Lightbox`. Both take a manifest of images produced by the bundled build
+script, which writes an AVIF + WebP ladder plus a blur placeholder for each
+source photo:
+
+```bash
+npm i -D sharp
+node node_modules/hui/scripts/optimize-images.mjs photos-src photos
+```
+
+That reads `photos-src/`, writes derivatives to `public/photos/` and a
+`photos.manifest.json` you hand straight to the grid:
+
+```tsx
+import { PhotoGallery } from "hui";
+import photos from "@/photos.manifest.json";
+
+<PhotoGallery photos={photos} />;
+```
+
+Re-runs skip unchanged sources, so it is cheap to wire into `prebuild`.
+
+`Lightbox` also works on its own (`items`, `index`, `onIndex`) when you want
+your own grid, and takes an optional `onEvent(name, props)` for the same
+analytics reason as `onNavigate` above — it fires on paging and on the
+download link.
+
+`PhotoImg` is the underlying `<picture>`: pass it one manifest entry and a
+`sizes` string.
+
 ## Requirements
 
 - **Tailwind v4**, with a dark variant: `@custom-variant dark (&:where(.dark, .dark *));`
@@ -110,6 +142,8 @@ depends on CSS selectors.
 - **Next App Router** — only for `SiteChrome` / `Sidebar`, which use `next/link`
   and `next/navigation`. `HomeLink`, `Byline`, `SiteFooter`, and
   `DarkModeToggle` are plain React and work anywhere.
+- **sharp** — only to run `scripts/optimize-images.mjs`; an optional peer
+  dependency, so it is never installed for the components alone.
 
 ## Fonts
 
