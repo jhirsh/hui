@@ -13,20 +13,26 @@
   "types": "./index.tsx",
   "exports": {
     ".": "./index.tsx",
-    "./tokens": "./tokens.ts"
+    "./tokens": "./tokens.ts",
+    "./scripts/optimize-images.mjs": "./scripts/optimize-images.mjs"
   },
   "files": [
     "*.tsx",
     "*.ts",
+    "scripts",
     "README.md"
   ],
   "sideEffects": false,
   "peerDependencies": {
     "react": ">=18",
-    "next": ">=14"
+    "next": ">=14",
+    "sharp": ">=0.33"
   },
   "peerDependenciesMeta": {
     "next": {
+      "optional": true
+    },
+    "sharp": {
       "optional": true
     }
   }
