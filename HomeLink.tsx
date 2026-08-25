@@ -1,4 +1,5 @@
 import { linkVariants, type LinkVariant } from "./tokens";
+import type { OnNavigate } from "./types";
 
 /**
  * Navigation back to the main site, for standalone pieces (camino, lct) that
@@ -14,15 +15,22 @@ export default function HomeLink({
   variant = "underline",
   arrow = true,
   className = "",
+  onNavigate,
 }: {
   href?: string;
   label?: string;
   variant?: LinkVariant;
   arrow?: boolean;
   className?: string;
+  /** Called on click, before navigation. For analytics; see README. */
+  onNavigate?: OnNavigate;
 }) {
   return (
-    <a href={href} className={`${linkVariants[variant]} ${className}`}>
+    <a
+      href={href}
+      className={`${linkVariants[variant]} ${className}`}
+      onClick={onNavigate && (() => onNavigate({ to: href, label, from: "HomeLink" }))}
+    >
       {arrow && <>&larr; </>}
       {label}
     </a>

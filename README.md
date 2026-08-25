@@ -57,6 +57,52 @@ import { HomeLink, Byline, SiteFooter, tokens } from "hui";
 | `ThemeScript` | Anti-flash theme restore. Render inside `<head>`. |
 | `tokens` / `linkVariants` | Shared class tokens, so your own markup can match. |
 
+## Tracking navigation away (analytics)
+
+`Byline` and `HomeLink` send people to another site — usually from a standalone
+piece (camino, lct) back to the apex. `SiteFooter` forwards to the `HomeLink`
+inside it. Each takes an optional `onNavigate`, called on click before the
+browser leaves:
+
+```tsx
+<HomeLink onNavigate={({ to, label, from }) => track(from, to, label)} />
+```
+
+This kit stays analytics-free on purpose — it has no runtime dependencies, and
+baking in a vendor would push that on every consumer. The callback is the seam.
+
+### With PostHog
+
+Wire it to `capture` at each call site:
+
+```tsx
+import posthog from "posthog-js";
+import { Byline, SiteFooter, type OnNavigate } from "hui";
+
+const track: OnNavigate = ({ to, label, from }) =>
+  posthog.capture("cross_site_link_clicked", { to, label, from });
+
+<Byline date="June – August 2026" onNavigate={track} />
+<SiteFooter themeToggle onNavigate={track} />
+```
+
+**Sessions across subdomains.** A named event is only useful if both sites agree
+on who the visitor is. For one session across `hirshland.xyz` and its
+sub-sites, every site must:
+
+1. **Use the same PostHog project token.** The identity cookie is per-token, so
+   separate projects cannot be bridged.
+2. **Set `persistence: "cookie"`** in `posthog.init`. The default is
+   `localStorage+cookie`, and localStorage is per-origin — each subdomain keeps
+   its own copy, which drifts from the shared cookie and reads as a new session.
+
+`cross_subdomain_cookie` needs no attention: posthog-js already defaults it on
+for a normal apex domain, opting out only for shared hosts like `vercel.app`.
+
+Autocapture records these clicks either way. `onNavigate` earns its place by
+giving them a stable event name and typed properties, instead of a query that
+depends on CSS selectors.
+
 ## Requirements
 
 - **Tailwind v4**, with a dark variant: `@custom-variant dark (&:where(.dark, .dark *));`

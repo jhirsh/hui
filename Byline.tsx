@@ -1,4 +1,5 @@
 import { tokens } from "./tokens";
+import type { OnNavigate } from "./types";
 
 /**
  * Attribution line: who made it, and optionally when and where.
@@ -11,6 +12,7 @@ export default function Byline({
   location,
   prefix = "by",
   className = "",
+  onNavigate,
 }: {
   name?: string;
   /** Omit to render the name as plain text instead of a link. */
@@ -19,6 +21,8 @@ export default function Byline({
   location?: string;
   prefix?: string;
   className?: string;
+  /** Called on click, before navigation. For analytics; see README. */
+  onNavigate?: OnNavigate;
 }) {
   const details = [date, location].filter(Boolean);
 
@@ -30,7 +34,11 @@ export default function Byline({
     <span className={`text-sm ${className}`}>
       {prefix && <span className={tokens.subtle}>{prefix} </span>}
       {href ? (
-        <a href={href} className={tokens.link}>
+        <a
+          href={href}
+          className={tokens.link}
+          onClick={onNavigate && (() => onNavigate({ to: href, label: name, from: "Byline" }))}
+        >
           {name}
         </a>
       ) : (
