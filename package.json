@@ -1,10 +1,13 @@
 {
   "name": "hui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared UI kit for hirshland.xyz and its standalone pieces.",
   "license": "MIT",
   "author": "Jonas Hirshland",
-  "repository": { "type": "git", "url": "git+https://github.com/jhirsh/hui.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhirsh/hui.git"
+  },
   "type": "module",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -12,13 +15,19 @@
     ".": "./index.tsx",
     "./tokens": "./tokens.ts"
   },
-  "files": ["*.tsx", "*.ts", "README.md"],
+  "files": [
+    "*.tsx",
+    "*.ts",
+    "README.md"
+  ],
   "sideEffects": false,
   "peerDependencies": {
     "react": ">=18",
     "next": ">=14"
   },
   "peerDependenciesMeta": {
-    "next": { "optional": true }
+    "next": {
+      "optional": true
+    }
   }
 }
