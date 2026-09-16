@@ -10,6 +10,9 @@ export default function Sidebar({ links }: { links: NavLink[] }) {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  // trailingSlash sites report "/work/", links are written "/work".
+  const isHere = (href: string) => pathname.replace(/\/$/, "") === href.replace(/\/$/, "");
+
   return (
     <>
       {/* In-flow (not fixed) so it pushes content down instead of overlapping it. */}
@@ -31,13 +34,27 @@ export default function Sidebar({ links }: { links: NavLink[] }) {
           ☰
         </button>
         {links.map((l) => (
-          <Link
-            key={l.href}
-            href={l.href}
-            className="block no-underline text-lg md:text-[25px] md:ml-[20%] py-2.5 px-2 text-[#818181] dark:text-[#b0b0b0] hover:text-black dark:hover:text-white transition"
-          >
-            {l.label}
-          </Link>
+          <div key={l.href}>
+            <Link
+              href={l.href}
+              className="block no-underline text-lg md:text-[25px] md:ml-[20%] py-2.5 px-2 text-[#818181] dark:text-[#b0b0b0] hover:text-black dark:hover:text-white transition"
+            >
+              {l.label}
+            </Link>
+            {l.children &&
+              [l, ...l.children].some((c) => isHere(c.href)) &&
+              l.children.map((c) => (
+                <Link
+                  key={c.href}
+                  href={c.href}
+                  className={`block no-underline text-base md:text-lg ml-4 md:ml-[calc(20%_+_1.5rem)] py-1.5 px-2 hover:text-black dark:hover:text-white transition ${
+                    isHere(c.href) ? "text-black dark:text-white" : "text-[#818181] dark:text-[#b0b0b0]"
+                  }`}
+                >
+                  {c.label}
+                </Link>
+              ))}
+          </div>
         ))}
       </nav>
     </>
