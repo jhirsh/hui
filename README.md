@@ -56,6 +56,36 @@ import { HomeLink, Byline, SiteFooter, tokens } from "hui";
 | `SiteChrome` / `Sidebar` | Full sidebar nav shell. Next App Router only. |
 | `ThemeScript` | Anti-flash theme restore. Render inside `<head>`. |
 | `tokens` / `linkVariants` | Shared class tokens, so your own markup can match. |
+| `useScrollStrip` / `ScrollArrow` | Prev/next arrows for a horizontal scroll strip. See below. |
+
+## Scroll strips
+
+A row of cards that scrolls sideways with its scrollbar hidden is unreachable
+with a mouse wheel — sideways needs Shift, which nobody knows. `useScrollStrip`
+tracks how far the strip can still scroll each way and steps one card at a
+time; `ScrollArrow` is the button. The strip itself stays your markup, so snap,
+padding and edge fades are up to each site.
+
+```tsx
+const { ref, onScroll, atStart, atEnd, scroll } = useScrollStrip();
+
+<div className="relative">
+  <div ref={ref} onScroll={onScroll} className="flex gap-4 overflow-x-auto [scrollbar-width:none]">
+    {cards}
+  </div>
+  <ScrollArrow dir={-1} show={!atStart} onClick={() => scroll(-1)} />
+  <ScrollArrow dir={1} show={!atEnd} onClick={() => scroll(1)} />
+</div>
+```
+
+- Arrows render only for fine pointers (`pointer-fine`, Tailwind v4.1+). Touch
+  and trackpads swipe.
+- Each fades out at the end it points to, and doesn't render a "more" arrow for a
+  strip that already fits.
+- The hook also returns `before` / `after`, the pixels left each way, for
+  scroll-driven effects like edge fades.
+- `scroll` steps to the next card's edge, so it works with mixed card widths.
+  Cards must be the strip's direct children.
 
 ## Tracking navigation away (analytics)
 
